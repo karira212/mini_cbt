@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Informatika Kelas 9 - Proyek & Desain Produk Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .option-card:hover {
+            border-color: #047857;
+            background-color: #ecfdf5;
+        }
+        .option-card:active {
+            transform: scale(0.98);
+        }
+        .selected {
+            border-color: #065f46;
+            background-color: #d1fae5;
+            font-weight: 600;
+        }
+        button, .option-card, input[type="checkbox"] {
+            min-height: 44px;
+        }
+        .quiz-grid-list {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.5rem;
+            max-height: 20rem;
+            overflow-y: auto;
+            padding: 0.25rem;
+            min-width: 0;
+        }
+        .quiz-nav-button {
+            min-width: 0;
+            min-height: 36px !important;
+            height: 36px;
+            padding: 0 0.25rem;
+            line-height: 1;
+        }
+        @media (max-width: 767px) {
+            .sidebar-sticky {
+                position: relative !important;
+                top: 0 !important;
+            }
+            .nav-soal-hidden {
+                display: none;
+            }
+            .touch-btn {
+                min-height: 52px !important;
+                font-size: 15px !important;
+            }
+            .quiz-grid-list {
+                max-height: 18rem;
+            }
+            .quiz-nav-button {
+                min-height: 40px !important;
+                height: 40px;
+            }
+        }
+        .nav-toggle-btn {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            .nav-toggle-btn {
+                display: flex;
+            }
+        }
+        .license-reset-btn {
+            font-size: 10px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .license-reset-btn:hover {
+            opacity: 1;
+        }
+        header h1, header p {
+            text-shadow: none !important;
+            filter: none !important;
+            -webkit-text-stroke: 0 !important;
+            paint-order: fill !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800 pb-12 flex flex-col justify-between">
+
+    <div>
+        <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50 border-b border-slate-800">
+            <div class="max-w-5xl mx-auto px-3 md:px-4 py-2.5 md:py-3 flex flex-col md:flex-row justify-between md:items-center gap-2 md:gap-0">
+                <div>
+                    <h1 id="page-title" class="text-base md:text-xl font-bold tracking-wide">CBT Informatika Kelas 9</h1>
+                    <p id="page-subtitle" class="hidden md:block text-xs text-emerald-300">Proyek Konten Digital & Seni Merancang Produk Digital</p>
+                    <p id="page-subtitle-mobile" class="md:hidden text-[10px] text-emerald-300 leading-tight">Informatika Kelas 9 SMP</p>
+                </div>
+                <div class="flex items-center space-x-2 flex-shrink-0">
+                    <div id="violation-badge" class="hidden bg-rose-800 text-rose-100 text-[10px] md:text-xs px-2 py-1 rounded-lg border border-rose-600 font-semibold flex items-center space-x-1">
+                        <span>⚠️:</span>
+                        <span id="violation-count-display" class="font-bold text-yellow-300">0</span>/3
+                    </div>
+                    <div id="timer-box" class="hidden bg-slate-900 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-slate-800 text-right shadow-inner">
+                        <span class="hidden md:block text-xs text-slate-400 block">Sisa Waktu</span>
+                        <span id="timer-display" class="font-mono text-base md:text-xl font-bold text-emerald-300">75:00</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto mt-4 md:mt-6 px-3 md:px-4">
+
+            <!-- LAYAR PERANGKAT TERLALU KECIL -->
+            <div id="device-blocked-screen" class="hidden bg-amber-50 border-2 border-amber-400 rounded-2xl shadow-xl p-6 md:p-10 max-w-2xl mx-auto text-center">
+                <div class="w-20 h-20 bg-amber-200 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-5 text-4xl">
+                    📱
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-amber-800">LAYAR TERLALU KECIL</h2>
+                <p class="text-amber-700 text-sm md:text-base mt-3 font-semibold">Ukuran layar perangkat Anda terlalu kecil untuk menampilkan soal ujian dengan jelas.</p>
+                <div class="bg-white border border-amber-200 rounded-xl p-4 mt-5 text-left text-sm space-y-2">
+                    <p class="font-bold text-amber-800 flex items-center space-x-2">
+                        <span>💡</span><span>CARA MENANGANI:</span>
+                    </p>
+                    <ul class="list-disc list-inside space-y-1.5 pl-1 text-amber-700 text-xs md:text-sm">
+                        <li>Putar perangkat menjadi <strong>MODE LANDSCAPE (mendatar)</strong>, lalu muat ulang halaman.</li>
+                        <li>Pastikan tingkat perbesaran (zoom) browser berada pada angka <strong>100%</strong>.</li>
+                        <li>Gunakan peramban modern seperti Google Chrome, Edge, Safari, atau Firefox.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- LAYAR TERKUNCI (SUDAH MENGERJAKAN 1 KALI) -->
+            <div id="already-taken-screen" class="hidden bg-white rounded-2xl shadow-xl p-5 md:p-8 max-w-xl mx-auto border-2 border-rose-200 text-center">
+                <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+                    🔒
+                </div>
+                <span class="bg-rose-100 text-rose-800 text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Akses Ujian Ditutup</span>
+                <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 mt-2">Ujian Hanya Dapat Dikerjakan 1 Kali</h2>
+                <p class="text-slate-600 text-xs md:text-sm mt-1">Sistem mendeteksi perangkat ini telah digunakan untuk mengerjakan ujian Informatika Kelas 9.</p>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 my-5 text-left text-xs md:text-sm space-y-2">
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">Nama Peserta:</span>
+                        <span id="locked-name" class="font-bold text-slate-800">-</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">Kelas:</span>
+                        <span id="locked-class" class="font-bold text-slate-800">-</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">Status Sesi:</span>
+                        <span id="locked-status" class="font-bold text-emerald-700">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Skor Tercatat:</span>
+                        <span id="locked-score" class="font-extrabold text-emerald-700 text-base">-</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <a id="locked-wa-btn" target="_blank" rel="noopener noreferrer" class="hidden touch-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2 cursor-pointer text-sm">
+                        <span>Kirim Ulang Hasil ke WA Guru</span>
+                    </a>
+                    <button type="button" onclick="openSupervisorReset()" class="w-full py-2.5 text-xs text-slate-500 hover:text-rose-600 underline bg-transparent border-none cursor-pointer">
+                        🔐 Opsi Pengawas / Guru (Buka Kunci Ujian)
+                    </button>
+                </div>
+            </div>
+
+            <!-- LAYAR LISENSI -->
+            <div id="license-screen" class="hidden bg-white rounded-2xl shadow-xl p-5 md:p-8 max-w-xl mx-auto border border-slate-200">
+                <div class="text-center mb-5 md:mb-6">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-slate-900 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-2xl md:text-3xl shadow-lg ring-4 ring-emerald-200">
+                        🔐
+                    </div>
+                    <span class="bg-slate-900 text-emerald-300 text-[10px] md:text-xs font-bold px-3 md:px-4 py-1 md:py-1.5 rounded-full uppercase tracking-widest">SYSTEM LICENSE GATE</span>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 mt-3">VERIFIKASI KODE LISENSI</h2>
+                    <p class="text-slate-600 text-xs md:text-sm mt-1 leading-relaxed">Masukkan kode lisensi untuk membuka lembar soal Informatika Kelas 9.</p>
+                </div>
+
+                <form id="license-form" onsubmit="submitLicense(event)" class="space-y-4">
+                    <div>
+                        <label for="license-code" class="block text-sm font-semibold text-slate-700 mb-1.5 flex items-center space-x-1.5">
+                            <span>Kode Lisensi Aktivasi <span class="text-rose-500">*</span></span>
+                        </label>
+                        <input type="text" id="license-code" required maxlength="30" placeholder="Masukkan Kode: R3NA" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9\-]/g, '')" class="touch-btn w-full px-4 py-3.5 md:py-3 rounded-lg border-2 border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-center font-mono font-bold tracking-wider text-base md:text-sm text-slate-800 bg-slate-50">
+                    </div>
+
+                    <div id="license-error" class="hidden bg-rose-50 border-2 border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-xs font-semibold flex items-start space-x-2">
+                        <span class="text-lg">⚠️</span>
+                        <span id="license-error-text">Kode Lisensi tidak valid! Silakan masukkan kode yang benar.</span>
+                    </div>
+                    <div id="license-success" class="hidden bg-emerald-50 border-2 border-emerald-300 text-emerald-700 px-4 py-3 rounded-xl text-xs font-semibold flex items-start space-x-2">
+                        <span class="text-lg">✅</span>
+                        <span>Kode Lisensi TERVERIFIKASI! Membuka halaman ujian...</span>
+                    </div>
+
+                    <button type="submit" class="touch-btn w-full bg-gradient-to-r from-slate-900 to-emerald-800 hover:from-slate-800 hover:to-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-300 flex items-center justify-center space-x-2">
+                        <span>BUKA SOAL UJIAN</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- LAYAR IDENTITAS PESERTA -->
+            <div id="start-screen" class="hidden bg-white rounded-2xl shadow-xl p-5 md:p-8 max-w-xl mx-auto border border-slate-200">
+                <div class="text-center mb-5 md:mb-6 relative">
+                    <span class="bg-emerald-100 text-emerald-800 text-[10px] md:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">CBT - Informatika Kelas IX</span>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-800 mt-2">Lembar Masuk Ujian</h2>
+                    <p id="start-subtitle" class="text-slate-600 text-xs md:text-sm mt-1">Lengkapi data identitas peserta sebelum memulai ujian.</p>
+                    <button type="button" onclick="resetLicense()" class="license-reset-btn absolute top-0 right-0 text-slate-400 hover:text-rose-500 underline text-[10px] md:text-xs bg-transparent border-none p-0 cursor-pointer min-h-0 h-auto" title="Ganti / Reset Kode Lisensi">
+                        🔑 Ganti Lisensi
+                    </button>
+                </div>
+
+                <form id="identity-form" onsubmit="startQuiz(event)" class="space-y-3 md:space-y-4">
+                    <div>
+                        <label for="student-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
+                        <input type="text" id="student-name" required placeholder="Contoh: Budi Pratama" class="touch-btn w-full px-4 py-3 md:py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-sm md:text-base">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label for="education-level" class="block text-sm font-medium text-slate-700 mb-1">Jenjang <span class="text-rose-500">*</span></label>
+                            <select id="education-level" required class="touch-btn w-full px-4 py-3 md:py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-sm md:text-base bg-white">
+                                <option value="SMP" selected>SMP / MTs</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="subject-name" class="block text-sm font-medium text-slate-700 mb-1">Mata Pelajaran <span class="text-rose-500">*</span></label>
+                            <select id="subject-name" required class="touch-btn w-full px-4 py-3 md:py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-sm md:text-base bg-white">
+                                <option value="Informatika" selected>Informatika</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="student-class" class="block text-sm font-medium text-slate-700 mb-1">Kelas <span class="text-rose-500">*</span></label>
+                        <input type="text" id="student-class" required placeholder="Contoh: IX-A / 9-B" class="touch-btn w-full px-4 py-3 md:py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-sm md:text-base">
+                    </div>
+                    <div>
+                        <label for="teacher-wa" class="block text-sm font-medium text-slate-700 mb-1">No. WhatsApp Guru Informatika <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 text-sm font-semibold">+62</span>
+                            <input type="tel" id="teacher-wa" required placeholder="81234567890 (tanpa awalan 0)" pattern="[0-9]{9,15}" class="touch-btn w-full pl-14 pr-4 py-3 md:py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition text-sm md:text-base">
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 md:p-4 text-xs text-amber-900 space-y-2">
+                        <p class="font-bold flex items-center space-x-1">
+                            <span>🛡️</span>
+                            <span>Integritas Peserta Ujian (Kesempatan 1 Kali):</span>
+                        </p>
+                        <p>Ujian ini hanya dapat dikerjakan <strong>1 kali</strong>. Jika Anda memuat ulang halaman atau keluar setelah memulai, sesi akan terkunci secara otomatis.</p>
+                        <label class="flex items-start space-x-2 cursor-pointer pt-1">
+                            <input type="checkbox" id="agree-license" required class="mt-0.5 w-4 h-4 accent-emerald-700">
+                            <span>Saya menyetujui tata tertib ujian dan siap mengerjakannya dengan penuh tanggung jawab.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="touch-btn w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 mt-4 flex items-center justify-center space-x-2">
+                        <span id="btn-start-text">Mulai Mengerjakan Ujian</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- LAYAR SOAL UJIAN -->
+            <div id="quiz-screen" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="md:col-span-3 space-y-3 md:space-y-4">
+                    <div class="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center text-xs md:text-sm">
+                        <div class="pr-2">
+                            <span class="text-slate-500 block">Peserta:</span>
+                            <span id="display-name" class="font-bold text-emerald-900"></span>
+                            <span id="display-subject" class="block text-[11px] text-slate-500"></span>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="text-slate-500 block">Progres</span>
+                            <span id="answered-count" class="font-bold text-emerald-600">0</span>/<span id="total-question-count">50</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-md p-4 md:p-6 border border-slate-200">
+                        <div class="flex justify-between items-center border-b pb-2 md:pb-3 mb-3 md:mb-4">
+                            <span id="question-number-badge" class="bg-emerald-100 text-emerald-800 text-[11px] md:text-xs font-bold px-2.5 md:px-3 py-1 rounded-full">
+                                Soal No. 1
+                            </span>
+                            <span class="text-[10px] md:text-xs text-slate-400">Pilihan Ganda</span>
+                        </div>
+
+                        <div id="question-text" class="text-sm md:text-base text-slate-800 font-medium leading-relaxed mb-4 md:mb-6">
+                        </div>
+
+                        <div id="options-container" class="space-y-2 md:space-y-3">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-white p-3 md:p-4 rounded-xl shadow-sm border border-slate-200 gap-2">
+                        <button id="prev-btn" onclick="prevQuestion()" class="touch-btn flex-1 px-3 md:px-5 py-2.5 md:py-2 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-sm">
+                            &larr; Sebelum
+                        </button>
+                        
+                        <button id="next-btn" onclick="nextQuestion()" class="touch-btn flex-1 px-3 md:px-5 py-2.5 md:py-2 rounded-lg bg-emerald-700 text-white font-medium hover:bg-emerald-800 transition text-sm">
+                            Berikutnya &rarr;
+                        </button>
+                    </div>
+
+                    <div class="md:hidden">
+                        <button onclick="toggleNavSoal()" class="nav-toggle-btn w-full items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-200 text-sm font-semibold text-slate-700">
+                            <span class="flex items-center space-x-2">
+                                <span>🗺️</span>
+                                <span>Peta Navigasi Soal</span>
+                            </span>
+                            <span id="nav-toggle-icon" class="text-emerald-700 transition-transform duration-200">▼</span>
+                        </button>
+                        <div id="nav-soal-mobile" class="nav-soal-hidden mt-3 bg-white p-4 rounded-xl shadow-md border border-slate-200">
+                            <div id="quiz-grid-mobile-container" class="min-w-0"></div>
+                            <button onclick="confirmSubmit()" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg shadow transition text-sm uppercase tracking-wider">
+                                Kumpulkan Ujian
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-1 hidden md:block">
+                    <div class="sidebar-sticky bg-white p-4 rounded-xl shadow-md border border-slate-200 sticky top-20">
+                        <h3 id="question-map-title" class="text-sm font-bold text-slate-700 mb-3 border-b pb-2">Peta Navigasi Soal (50 Butir)</h3>
+                        <div id="quiz-grid" class="min-w-0">
+                        </div>
+                        
+                        <button onclick="confirmSubmit()" class="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg shadow transition text-xs uppercase tracking-wider">
+                            Kumpulkan Ujian
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAYAR HASIL UJIAN -->
+            <div id="result-screen" class="hidden bg-white rounded-2xl shadow-xl p-5 md:p-8 max-w-xl mx-auto border border-slate-200 text-center">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-2xl md:text-3xl font-bold">
+                    ✓
+                </div>
+                <h2 class="text-xl md:text-2xl font-extrabold text-slate-800">Ujian Telah Selesai!</h2>
+                <p class="text-slate-600 text-xs md:text-sm mt-1">Jawaban Anda berhasil disimpan dan dikunci oleh sistem (1x pengerjaan).</p>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 md:p-4 my-4 md:my-6 text-left text-xs md:text-sm space-y-1.5 md:space-y-2">
+                    <div class="flex justify-between border-b pb-1 gap-2">
+                        <span class="text-slate-500">Nama:</span>
+                        <span id="res-name" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1 gap-2">
+                        <span class="text-slate-500">Kelas:</span>
+                        <span id="res-class" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1 gap-2">
+                        <span class="text-slate-500">Mata Pelajaran:</span>
+                        <span id="res-subject" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1 gap-2">
+                        <span class="text-slate-500">Waktu Pengerjaan:</span>
+                        <span id="res-time" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between gap-2">
+                        <span class="text-slate-500">Terjawab:</span>
+                        <span id="res-answered" class="font-bold text-slate-800"></span>
+                    </div>
+                </div>
+
+                <div class="p-4 md:p-6 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl mb-4 md:mb-6">
+                    <span class="text-[10px] md:text-xs uppercase font-bold text-emerald-700 tracking-wider">Skor Ujian Informatika</span>
+                    <div class="text-3xl md:text-4xl font-extrabold text-emerald-800 mt-1">
+                        <span id="score-display">0</span> <span class="text-base md:text-lg text-emerald-500 font-normal">/ 100</span>
+                    </div>
+                    <p id="grade-message" class="text-[11px] md:text-xs text-emerald-700 mt-2 font-medium leading-relaxed"></p>
+                </div>
+
+                <div class="space-y-2.5 md:space-y-3">
+                    <a id="wa-send-btn" target="_blank" rel="noopener noreferrer" class="touch-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 md:py-3 rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2 cursor-pointer text-sm md:text-base">
+                        <span>Kirim Lembar Hasil ke WA Guru</span>
+                    </a>
+
+                    <button onclick="location.reload()" class="touch-btn bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-3.5 md:py-2.5 rounded-xl transition text-sm w-full">
+                        Selesai & Tutup Sesi
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODAL PERINGATAN KEAMANAN -->
+            <div id="security-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+                <div class="bg-white rounded-2xl max-w-md w-full p-5 md:p-6 text-center shadow-2xl border border-rose-100">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl md:text-2xl font-bold">
+                        ⚠️
+                    </div>
+                    <h3 id="modal-title" class="text-lg md:text-xl font-bold text-slate-800">Peringatan Keamanan!</h3>
+                    <p id="modal-message" class="text-slate-600 text-xs md:text-sm mt-2 leading-relaxed"></p>
+
+                    <div id="modal-actions" class="mt-5 md:mt-6 flex justify-center">
+                        <button id="modal-primary-btn" class="touch-btn bg-rose-600 hover:bg-rose-700 text-white font-semibold px-5 py-3 md:py-2.5 rounded-xl transition text-sm w-full">
+                            Lanjutkan Ujian
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL KONFIRMASI PENGUMPULAN -->
+            <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+                <div class="bg-white rounded-2xl max-w-md w-full p-5 md:p-6 text-center shadow-2xl">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl md:text-2xl font-bold">
+                        ❓
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-slate-800">Kumpulkan Ujian Sekarang?</h3>
+                    <p id="confirm-modal-msg" class="text-slate-600 text-xs md:text-sm mt-2 leading-relaxed"></p>
+
+                    <div class="mt-5 md:mt-6 flex flex-col-reverse md:flex-row md:justify-end gap-2 md:gap-0 md:space-x-3">
+                        <button onclick="closeConfirmModal()" class="touch-btn w-full md:w-auto px-4 py-3 md:py-2 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50">Batal</button>
+                        <button onclick="submitQuiz()" class="touch-btn w-full md:w-auto px-5 py-3 md:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">Ya, Kumpulkan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL RESET PENGAWAS -->
+            <div id="supervisor-modal" class="hidden fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+                <div class="bg-white rounded-2xl max-w-sm w-full p-5 md:p-6 text-center shadow-2xl border border-slate-200">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                        🔑
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Otorisasi Guru / Pengawas</h3>
+                    <p class="text-slate-600 text-xs mt-1">Masukkan PIN Pengawas untuk mereset status 1x pengerjaan di perangkat ini.</p>
+                    <input type="password" id="supervisor-pin" placeholder="Masukkan PIN Pengawas" class="mt-4 w-full px-4 py-2.5 rounded-lg border border-slate-300 text-center font-mono text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    <p id="supervisor-error" class="hidden text-rose-600 text-xs mt-2 font-semibold">PIN Pengawas salah!</p>
+                    <div class="mt-5 flex gap-2">
+                        <button type="button" onclick="closeSupervisorReset()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold">Batal</button>
+                        <button type="button" onclick="confirmSupervisorReset()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold">Reset Kunci</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="mt-10 text-center text-xs text-slate-500 px-4">
+        <p>© 2026 Developer: TURINO HADISAPUTRO • SMP Negeri 90 Jakarta • PT TATA ARTHA JAYA • No. WA: 081287172216</p>
+    </footer>
+
+    <script>
+        const _0x2e = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        function _dx(v){let o='',a,b,c,d,e,f,g,h=0;v=v.replace(/[^A-Za-z0-9\+\/\=]/g,'');while(h<v.length){d=_0x2e.indexOf(v.charAt(h++)),e=_0x2e.indexOf(v.charAt(h++)),f=_0x2e.indexOf(v.charAt(h++)),g=_0x2e.indexOf(v.charAt(h++));a=d<<2|e>>4,b=(e&15)<<4|f>>2,c=(f&3)<<6|g;o+=String.fromCharCode(a);f!==64&&(o+=String.fromCharCode(b));g!==64&&(o+=String.fromCharCode(c));}return o;}
+        function _sx(v){let o='',a,b,c,d,e,f,g,h=0;v=String(v);while(h<v.length){a=v.charCodeAt(h++),h<v.length&&(b=v.charCodeAt(h++)),h<v.length&&(c=v.charCodeAt(h++));d=a>>2,e=(a&3)<<4|b>>4,f=(b&15)<<2|c>>6,g=c&63;isNaN(b)?f=g=64:isNaN(c)&&(g=64);o+=_0x2e.charAt(d)+_0x2e.charAt(e)+_0x2e.charAt(f)+_0x2e.charAt(g);}return o;}
+        function _cmp(a,b){let x=a.replace(/\s|<[^>]*>/g,'').trim().toLowerCase();let y=b.replace(/\s|<[^>]*>/g,'').trim().toLowerCase();return x===y;}
+
+        // Kunci Penyimpanan Permanen (1 Kali Pengerjaan)
+        const EXAM_LOCK_KEY = '_cbt_inf9_konten_digital_attempt_v1_';
+        const EXAM_SESSION_LOCK_KEY = '_cbt_inf9_konten_digital_session_v1_';
+        const SUPERVISOR_PIN = 'RESET90';
+
+        function _isMobileUA() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+            const t = ua.toLowerCase();
+            if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet|phone|playbook|silk|kindle|touch|palm|symbian|windows phone|bada|meego|nokia|sonyericsson/i.test(t)) return true;
+            if (('ontouchstart' in window) && (navigator.maxTouchPoints > 1)) return true;
+            return false;
+        }
+
+        function _licValid(code) {
+            if(!code) return false;
+            const cleaned = code.trim().toUpperCase();
+            return cleaned === "R3NA";
+        }
+
+        function hideAllScreens() {
+            document.getElementById('device-blocked-screen').classList.add('hidden');
+            document.getElementById('already-taken-screen').classList.add('hidden');
+            document.getElementById('license-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+        }
+
+        function showBlocked() {
+            hideAllScreens();
+            document.getElementById('device-blocked-screen').classList.remove('hidden');
+        }
+        function showLicenseScreen() {
+            hideAllScreens();
+            document.getElementById('license-screen').classList.remove('hidden');
+        }
+        function showStartScreen() {
+            hideAllScreens();
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        function showAlreadyTakenScreen(record) {
+            hideAllScreens();
+            document.getElementById('already-taken-screen').classList.remove('hidden');
+            document.getElementById('locked-name').innerText = record.name || 'Peserta Terdaftar';
+            document.getElementById('locked-class').innerText = record.class || '-';
+            if (record.completed) {
+                document.getElementById('locked-status').innerText = 'Selesai Dikumpulkan';
+                document.getElementById('locked-score').innerText = `${record.score} / 100 (${record.correct}/${record.total} Benar)`;
+                if (record.waUrl) {
+                    const waBtn = document.getElementById('locked-wa-btn');
+                    waBtn.href = record.waUrl;
+                    waBtn.classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('locked-status').innerText = 'Sesi Terputus / Ditutup Sebelum Selesai';
+                document.getElementById('locked-score').innerText = '0 / 100 (Terkunci)';
+            }
+        }
+
+        function getAttemptRecord() {
+            try {
+                const raw = localStorage.getItem(EXAM_LOCK_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (_) {}
+            try {
+                const rawSession = sessionStorage.getItem(EXAM_SESSION_LOCK_KEY);
+                if (rawSession) return JSON.parse(rawSession);
+            } catch (_) {}
+            return null;
+        }
+
+        function saveAttemptRecord(data) {
+            const serialized = JSON.stringify(data);
+            let saved = false;
+            try {
+                localStorage.setItem(EXAM_LOCK_KEY, serialized);
+                saved = true;
+            } catch (_) {}
+            try {
+                sessionStorage.setItem(EXAM_SESSION_LOCK_KEY, serialized);
+            } catch (_) {}
+            return saved;
+        }
+
+        let attemptChannel = null;
+        try {
+            if ('BroadcastChannel' in window) {
+                attemptChannel = new BroadcastChannel(EXAM_LOCK_KEY);
+                attemptChannel.onmessage = (event) => {
+                    if (event.data && event.data.type === 'attempt-updated') {
+                        const record = getAttemptRecord();
+                        if (record) showAlreadyTakenScreen(record);
+                    }
+                };
+            }
+        } catch (_) {}
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === EXAM_LOCK_KEY && event.newValue) {
+                const record = getAttemptRecord();
+                if (record) showAlreadyTakenScreen(record);
+            }
+        });
+
+        function openSupervisorReset() {
+            document.getElementById('supervisor-pin').value = '';
+            document.getElementById('supervisor-error').classList.add('hidden');
+            document.getElementById('supervisor-modal').classList.remove('hidden');
+        }
+
+        function closeSupervisorReset() {
+            document.getElementById('supervisor-modal').classList.add('hidden');
+        }
+
+        function confirmSupervisorReset() {
+            const pin = document.getElementById('supervisor-pin').value.trim().toUpperCase();
+            if (pin === SUPERVISOR_PIN) {
+                try { localStorage.removeItem(EXAM_LOCK_KEY); } catch (_) {}
+                try { sessionStorage.removeItem(EXAM_SESSION_LOCK_KEY); } catch (_) {}
+                closeSupervisorReset();
+                location.reload();
+            } else {
+                document.getElementById('supervisor-error').classList.remove('hidden');
+            }
+        }
+
+        function resetLicense() {
+            try { sessionStorage.removeItem('_taj_master_unlocked_'); } catch(_) {}
+            showLicenseScreen();
+            const inp = document.getElementById('license-code');
+            if (inp) { inp.value = ''; inp.focus(); }
+        }
+
+        function submitLicense(e) {
+            e.preventDefault();
+            const errBox = document.getElementById('license-error');
+            const okBox  = document.getElementById('license-success');
+            const input  = document.getElementById('license-code');
+            errBox.classList.add('hidden');
+            okBox.classList.add('hidden');
+
+            const code = input.value.trim();
+            if(_licValid(code)) {
+                okBox.classList.remove('hidden');
+                try { sessionStorage.setItem('_taj_master_unlocked_', _sx(code)); } catch(_) {}
+                setTimeout(() => {
+                    const prevAttempt = getAttemptRecord();
+                    if (prevAttempt) {
+                        showAlreadyTakenScreen(prevAttempt);
+                    } else {
+                        showStartScreen();
+                    }
+                }, 450);
+            } else {
+                errBox.classList.remove('hidden');
+            }
+        }
+
+        (function bootstrapGate() {
+            const prevAttempt = getAttemptRecord();
+            if (prevAttempt) {
+                showAlreadyTakenScreen(prevAttempt);
+                return;
+            }
+
+            let unlocked = false;
+            try {
+                const raw = sessionStorage.getItem('_taj_master_unlocked_');
+                if(raw) {
+                    const dec = _dx(raw);
+                    unlocked = _licValid(dec);
+                }
+            } catch(_) {}
+            if(unlocked) showStartScreen(); else showLicenseScreen();
+        })();
+
+        // =============================================================
+        // BANK SOAL LENGKAP: 50 SOAL PILIHAN GANDA KELAS 9 (C1, C2, C3, C4)
+        // KUNCI JAWABAN TERSEBAR MERATA PADA OPSI A, B, C, DAN D
+        // =============================================================
+        const _c0nfigPack = [
+            // --- C1: Mengingat (3 Soal) ---
+            {
+                _body: "[C1] Undang-Undang Republik Indonesia yang mengatur perlindungan hak cipta atas karya seni, audio visual, dan konten digital adalah...",
+                _variants: ["UU No. 19 Tahun 2016", "UU No. 1 Tahun 2024", "UU No. 28 Tahun 2014", "UU No. 14 Tahun 2008"],
+                _meta: _sx("UU No. 28 Tahun 2014") // Kunci: C
+            },
+            {
+                _body: "[C1] Format berkas grafik berbasis vektor yang mempertahankan ketajaman gambar saat diperbesar tanpa pecah adalah...",
+                _variants: ["SVG", "JPEG", "BMP", "GIF"],
+                _meta: _sx("SVG") // Kunci: A
+            },
+            {
+                _body: "[C1] Bagian paling akhir dalam struktur karya video tutorial atau siniar (podcast) yang memuat rangkuman dan ajakan bertindak disebut...",
+                _variants: ["Hook pembuka", "Body konten", "Bumper transisi", "Outro / Call to Action"],
+                _meta: _sx("Outro / Call to Action") // Kunci: D
+            },
+
+            // --- C2: Memahami (5 Soal) ---
+            {
+                _body: "[C2] Mengapa prinsip <em>white space</em> (ruang kosong) sangat esensial dalam tata letak desain media digital?",
+                _variants: ["Membuat halaman terlihat penuh warna", "Memberikan jeda visual agar mata audiens fokus mencerna hierarki pesan penting", "Menghemat penggunaan tinta cetak", "Mengurangi ukuran resolusi piksel"],
+                _meta: _sx("Memberikan jeda visual agar mata audiens fokus mencerna hierarki pesan penting") // Kunci: B
+            },
+            {
+                _body: "[C2] Perbedaan mendasar antara lisensi Creative Commons (CC-BY) dengan status Public Domain pada aset digital adalah...",
+                _variants: ["CC-BY berbayar, sedangkan Public Domain gratis", "Public Domain hanya berlaku untuk file audio", "CC-BY melarang semua jenis penyuntingan karya", "CC-BY mewajibkan atribusi pencipta asli, sedangkan Public Domain bebas digunakan tanpa syarat kredit"],
+                _meta: _sx("CC-BY mewajibkan atribusi pencipta asli, sedangkan Public Domain bebas digunakan tanpa syarat kredit") // Kunci: D
+            },
+            {
+                _body: "[C2] Dalam kendali mutu (Quality Control) konten siniar (podcast), fungsi utama penerapan filter <em>noise reduction</em> adalah...",
+                _variants: ["Meredam dengung dan suara bising ruangan tanpa merusak kejernihan vokal utama", "Mengubah frekuensi suara menjadi musik latar", "Menaikkan nada vokal menjadi lebih melengking", "Menambahkan efek gema buatan"],
+                _meta: _sx("Meredam dengung dan suara bising ruangan tanpa merusak kejernihan vokal utama") // Kunci: A
+            },
+            {
+                _body: "[C2] Makna dan urgensi utama penyusunan <em>moodboard</em> serta <em>storyboard</em> sebelum pengambilan gambar video adalah...",
+                _variants: ["Memenuhi syarat administrasi pengawas lab", "Memamerkan kemampuan menggambar sketsa tim", "Menyamakan persepsi visual dan alur adegan seluruh tim agar proses produksi terarah", "Menggantikan peran sutradara di lapangan"],
+                _meta: _sx("Menyamakan persepsi visual dan alur adegan seluruh tim agar proses produksi terarah") // Kunci: C
+            },
+            {
+                _body: "[C2] Dampak jangka panjang yang diperoleh kreator digital jika konsisten menjaga integritas konten dan keaslian fakta adalah...",
+                _variants: ["Konten mudah dihapus oleh algoritma", "Membangun kredibilitas, reputasi terpercaya, dan loyalitas audiens", "Mendapat teguran dari dewan pers sekolah", "Menghabiskan kapasitas penyimpanan server"],
+                _meta: _sx("Membangun kredibilitas, reputasi terpercaya, dan loyalitas audiens") // Kunci: B
+            },
+
+            // --- C3: Menerapkan (21 Soal: No 9 - 29) ---
+            {
+                _body: "[C3] Tim Anda ingin membuat infografik bertema 'Pilah Sampah Sekolah'. Agar informasi alur pemilahan terbaca teratur dari atas ke bawah, penerapan tata letak yang paling tepat adalah...",
+                _variants: ["Menggabungkan semua teks dalam satu paragraf panjang tebal", "Menempatkan logo sponsor di tengah gambar menutup diagram", "Menggunakan jenis font dekoratif berbeda di setiap kalimat", "Hierarki visual vertikal terstruktur dengan nomor langkah kontras"],
+                _meta: _sx("Hierarki visual vertikal terstruktur dengan nomor langkah kontras") // Kunci: D
+            },
+            {
+                _body: "[C3] Saat melakukan rekaman suara di lab komputer, mikrofon menangkap bunyi desis kipas pendingin CPU. Tindakan preventif praktis yang harus dilakukan sebelum merekam ulang adalah...",
+                _variants: ["Berteriak lebih keras ke mikrofon", "Mendekatkan mikrofon tepat ke lubang kipas komputer", "Mengatur gain input, menggunakan pop filter, dan memposisikan mikrofon membelakangi arah hembusan angin", "Menutup kepala mikrofon dengan kain basah"],
+                _meta: _sx("Mengatur gain input, menggunakan pop filter, dan memposisikan mikrofon membelakangi arah hembusan angin") // Kunci: C
+            },
+            {
+                _body: "[C3] Anda membutuhkan musik pengiring video edukasi sains untuk diunggah ke platform publik sekolah. Sumber audio yang paling aman dari pelanggaran hak cipta adalah...",
+                _variants: ["Musik berlisensi bebas royalti (Royalty-Free) dari perpustakaan audio resmi berlisensi CC", "Lagu pop terkenal yang sedang viral di radio", "Rekaman konser musik komersial dari YouTube", "Potongan lagu artis tanpa mencantumkan sumber"],
+                _meta: _sx("Musik berlisensi bebas royalti (Royalty-Free) dari perpustakaan audio resmi berlisensi CC") // Kunci: A
+            },
+            {
+                _body: "[C3] Pada aplikasi penyunting video, jika Anda ingin membuat teks penjelasan materi sains muncul serentak tepat saat presenter menyebutkan kata kunci, fitur yang harus dimanfaatkan adalah...",
+                _variants: ["Fitur crop rasio", "Penyelarasan keyframe dan marker pada timeline audio visual", "Fitur color grading LUT", "Fitur ekspor batch otomatis"],
+                _meta: _sx("Penyelarasan keyframe dan marker pada timeline audio visual") // Kunci: B
+            },
+            {
+                _body: "[C3] Dalam proyek e-Book mini panduan lab, desainer ingin memastikan kenyamanan membaca teks paragraf panjang pada layar digital. Pengaturan tipografi yang benar adalah...",
+                _variants: ["Mengatur spasi baris 0.8 dengan teks rapat berwarna kuning terang", "Menggunakan huruf kapital miring tebal untuk seluruh isi bab", "Memilih font sans-serif bersih dengan line-spacing (leading) 1.4 - 1.6", "Menyetel margin halaman 0 cm agar halaman penuh"],
+                _meta: _sx("Memilih font sans-serif bersih dengan line-spacing (leading) 1.4 - 1.6") // Kunci: C
+            },
+            {
+                _body: "[C3] Ketika menyusun papan manajemen proyek tim (Kanban board) di aplikasi kolaborasi kerja, kartu tugas 'Penyuntingan Suara Podcast' yang sedang dikerjakan harus ditaruh pada kolom...",
+                _variants: ["Backlog", "Done (Selesai)", "Archived", "In Progress (Sedang Dikerjakan)"],
+                _meta: _sx("In Progress (Sedang Dikerjakan)") // Kunci: D
+            },
+            {
+                _body: "[C3] Sesuai panduan SOP lab komputer, tindakan awal yang wajib dilakukan siswa sebelum meninggalkan ruang lab setelah sesi produksi digital adalah...",
+                _variants: ["Menyimpan seluruh proyek kerja, menutup aplikasi, shutdown sistem, dan merapikan periferal", "Mencabut seluruh kabel instalasi LAN di dinding", "Membiarkan komputer tetap menyala agar cepat dipakai kelas lain", "Menghapus aplikasi desain bawaan sistem"],
+                _meta: _sx("Menyimpan seluruh proyek kerja, menutup aplikasi, shutdown sistem, dan merapikan periferal") // Kunci: A
+            },
+            {
+                _body: "[C3] Anda ditugaskan merancang video pendek reels vertikal untuk kampanye literasi digital. Standar rasio aspek bingkai (aspect ratio) dan resolusi standar yang harus dipilih adalah...",
+                _variants: ["1:1 (1080 x 1080)", "9:16 (1080 x 1920)", "4:3 (1024 x 768)", "16:9 (1920 x 1080)"],
+                _meta: _sx("9:16 (1080 x 1920)") // Kunci: B
+            },
+            {
+                _body: "[C3] Dalam aplikasi grafis vektor, instrumen utama yang paling tepat digunakan untuk membuat kurva vektor logo yang presisi dan mulus adalah...",
+                _variants: ["Eraser Tool", "Paint Bucket Tool", "Pen Tool / Bezier Curve Tool", "Lasso Selection Tool"],
+                _meta: _sx("Pen Tool / Bezier Curve Tool") // Kunci: C
+            },
+            {
+                _body: "[C3] Sebuah foto dokumentasi kegiatan sekolah terlihat agak redup (underexposed) saat dimasukkan ke dalam majalah dinding digital. Pengaturan awal yang perlu diterapkan adalah...",
+                _variants: ["Menurunkan saturasi menjadi monokrom", "Memperbesar ukuran foto hingga 300%", "Memberikan efek blur pada seluruh area gambar", "Menyesuaikan Exposure, Shadow, dan Brightness/Contrast secara bertahap"],
+                _meta: _sx("Menyesuaikan Exposure, Shadow, dan Brightness/Contrast secara bertahap") // Kunci: D
+            },
+            {
+                _body: "[C3] Ketika mengekspor berkas e-Book panduan praktikum digital agar mudah dibuka di berbagai perangkat siswa tanpa mengubah tata letak font dan gambar, format berkas yang tepat adalah...",
+                _variants: ["PDF (Interactive/Standard)", "TXT", "RAW", "BMP"],
+                _meta: _sx("PDF (Interactive/Standard)") // Kunci: A
+            },
+            {
+                _body: "[C3] Dalam rekaman siniar wawancara dua narasumber di lab komputer, agar suara masing-masing pembicara dapat diedit volume dan kejernihannya secara independen, teknik yang harus diterapkan adalah...",
+                _variants: ["Menggunakan satu earphone secara bergantian", "Perekaman multitrack dengan saluran input mikrofon terpisah", "Merekam suara dalam format mono gabung", "Menggunakan mikrofon built-in laptop dari jarak jauh"],
+                _meta: _sx("Perekaman multitrack dengan saluran input mikrofon terpisah") // Kunci: B
+            },
+            {
+                _body: "[C3] Jika Anda mengutip bagan siklus air dari artikel ilmiah milik peneliti lain ke dalam karya infografik Anda, penerapan etika dan integritas konten yang benar adalah...",
+                _variants: ["Mengganti judul bagan lalu mengklaimnya sebagai karya buatan sendiri", "Menghapus watermark peneliti dengan aplikasi kloning", "Mencantumkan nama peneliti, tahun, dan sumber rujukan di bagian catatan kaki karya", "Mengaburkan nama pencipta asli agar tidak terbaca"],
+                _meta: _sx("Mencantumkan nama peneliti, tahun, dan sumber rujukan di bagian catatan kaki karya") // Kunci: C
+            },
+            {
+                _body: "[C3] Dalam metodologi kerja produksi video animasi pendek, langkah yang wajib diselesaikan terlebih dahulu sebelum tahap rendering akhir adalah...",
+                _variants: ["Mempromosikan video di media sosial", "Membeli lisensi baru", "Menghapus aset gambar mentah", "Uji pratinjau (playback preview), sinkronisasi audio-visual, dan QC visual"],
+                _meta: _sx("Uji pratinjau (playback preview), sinkronisasi audio-visual, dan QC visual") // Kunci: D
+            },
+            {
+                _body: "[C3] Dalam pembagian peran tim digital, anggota tim yang bertugas menyusun alur cerita, menulis teks narasi, dan menyusun dialog adalah...",
+                _variants: ["Scriptwriter / Copywriter", "Audio Engineer", "Motion Graphic Designer", "Quality Controller"],
+                _meta: _sx("Scriptwriter / Copywriter") // Kunci: A
+            },
+            {
+                _body: "[C3] Format kompresi audio yang menghasilkan ukuran file relatif ringan namun tetap memiliki kualitas akustik jernih untuk siniar digital web adalah...",
+                _variants: ["WAV non-compressed", "MP3 atau AAC (128 - 192 kbps)", "MIDI unrendered", "AIFF studio master"],
+                _meta: _sx("MP3 atau AAC (128 - 192 kbps)") // Kunci: B
+            },
+            {
+                _body: "[C3] Untuk menjaga keselamatan kerja dan kelestarian perangkat keras saat bekerja di lab komputer dalam jangka waktu lama, sikap ergonomis yang benar adalah...",
+                _variants: ["Duduk membungkuk dengan jarak mata 10 cm dari monitor", "Meletakkan botol air terbuka di atas papan ketik", "Posisi layar sejajar pandangan mata dengan punggung tegak bersandar nyaman", "Menumpuk CPU dengan buku pelajaran"],
+                _meta: _sx("Posisi layar sejajar pandangan mata dengan punggung tegak bersandar nyaman") // Kunci: C
+            },
+            {
+                _body: "[C3] Anda diminta membuat video tutorial cara merakit robot lego. Bagian video yang bertujuan memancing rasa penasaran penonton dalam 5 detik pertama disebut...",
+                _variants: ["Credits roll", "Body tutorial langkah 3", "Daftar pustaka", "Hook video pembuka"],
+                _meta: _sx("Hook video pembuka") // Kunci: D
+            },
+            {
+                _body: "[C3] Ketika menyusun hierarki visual pada poster digital, elemen yang paling ingin ditonjolkan pertama kali oleh audiens harus dirancang dengan kriteria...",
+                _variants: ["Ukuran skala kontras, posisi strategis, dan penekanan warna yang tegas", "Ditempatkan di sudut bawah dengan warna abu-abu", "Ukuran font paling kecil di halaman", "Ditumpuk di belakang gambar ilustrasi"],
+                _meta: _sx("Ukuran skala kontras, posisi strategis, dan penekanan warna yang tegas") // Kunci: A
+            },
+            {
+                _body: "[C3] Pada manajemen berkas proyek konten digital di komputer sekolah, praktik penamaan folder dan berkas yang paling sistematis adalah...",
+                _variants: ["folder_baru_1 / file_final_bgt_ok.mp4", "2026_Informatika9_ProyekKonten_V1 / Assets / Audio / BGM_Ep1.mp3", "tanpa_nama / draft.mp4", "semua file ditaruh di Desktop tanpa folder"],
+                _meta: _sx("2026_Informatika9_ProyekKonten_V1 / Assets / Audio / BGM_Ep1.mp3") // Kunci: B
+            },
+            {
+                _body: "[C3] Jika mikrofon di lab komputer tidak mengeluarkan sinyal gelombang suara di aplikasi DAW/Audacity saat merekam, langkah penanganan pertama yang benar adalah...",
+                _variants: ["Langsung membongkar papan induk komputer", "Menginstal ulang sistem operasi Windows", "Memeriksa izin akses mikrofon di sistem operasi dan memastikan perangkat input dipilih dengan benar", "Mengetuk fisik mikrofon dengan benda keras berkali-kali"],
+                _meta: _sx("Memeriksa izin akses mikrofon di sistem operasi dan memastikan perangkat input dipilih dengan benar") // Kunci: C
+            },
+
+            // --- C4: Menganalisis (21 Soal: No 30 - 50) ---
+            {
+                _body: "[C4] Sebuah poster kegiatan sekolah memuat tulisan biru tua di atas latar belakang ungu tua, sehingga audiens mengeluh tidak dapat membacanya dari kejauhan. Kesalahan fatal desain tersebut terjadi pada aspek...",
+                _variants: ["Kerning tipografi", "Ukuran resolusi canvas", "Margin bingkai", "Rasio kontras warna (color contrast ratio)"],
+                _meta: _sx("Rasio kontras warna (color contrast ratio)") // Kunci: D
+            },
+            {
+                _body: "[C4] Tim proyek membuat video edukasi, namun suara musik latar (BGM) menenggelamkan artikulasi suara narator sehingga pesan tidak tersampaikan. Analisis teknis perbaikan yang tepat pada timeline audio adalah...",
+                _variants: ["Menerapkan fitur audio ducking atau menurunkan volume BGM sekitar -18 dB hingga -24 dB saat narasi berbunyi", "Menaikkan volume musik latar hingga 0 dB", "Menghapus suara narator", "Memotong durasi video menjadi separuh"],
+                _meta: _sx("Menerapkan fitur audio ducking atau menurunkan volume BGM sekitar -18 dB hingga -24 dB saat narasi berbunyi") // Kunci: A
+            },
+            {
+                _body: "[C4] Seseorang mengunduh video buatan kreator lain, memotong bagian watermark, lalu mengunggahnya kembali ke kanal pribadinya demi monetisasi tanpa izin. Ditinjau dari hukum siber (UU ITE dan UU Hak Cipta), tindakan tersebut dikategorikan sebagai...",
+                _variants: ["Fair use yang sah", "Pelanggaran hak moral dan hak ekonomi pencipta", "Tindakan kurasi konten kreatif", "Kolaborasi digital wajar"],
+                _meta: _sx("Pelanggaran hak moral dan hak ekonomi pencipta") // Kunci: B
+            },
+            {
+                _body: "[C4] Perhatikan indikator evaluasi produk digital berikut: (1) Kemudahan navigasi, (2) Waktu muat halaman cepat, (3) Keterbacaan teks yang ramah pengguna. Indikator-indikator tersebut secara khusus mengukur dimensi kualitas...",
+                _variants: ["Kapasitas RAM komputer server", "Jumlah efek visual 3D", "User Experience (UX) dan Aksesibilitas", "Tingkat kerumitan bahasa pemrograman"],
+                _meta: _sx("User Experience (UX) dan Aksesibilitas") // Kunci: C
+            },
+            {
+                _body: "[C4] Sebuah tim beranggotakan 4 siswa mengalami keterlambatan proyek konten hingga melampaui tenggat waktu karena seluruh anggota saling menunggu arahan tanpa ada yang mengambil inisiatif. Akar masalah manajerial tim tersebut adalah...",
+                _variants: ["Aplikasi penyunting video terlalu canggih", "Spesifikasi monitor lab terlalu lebar", "Ukuran berkas proyek terlalu kecil", "Ketiadaan pembagian peran (RACI), target tenggat waktu (milestone), dan koordinasi berkala"],
+                _meta: _sx("Ketiadaan pembagian peran (RACI), target tenggat waktu (milestone), dan koordinasi berkala") // Kunci: D
+            },
+            {
+                _body: "[C4] Ketika gambar berformat JPEG beresolusi 200x200 piksel ditarik paksa menjadi banner spanduk berukuran 2x2 meter, gambar tampak buram dan bergerigi kotak-kotak (pixelated). Faktor teknis penyebabnya adalah...",
+                _variants: ["Kerapatan piksel (DPI/PPI) bitmap tidak memadai untuk skala cetak besar", "Format JPEG tidak mendukung warna RGB", "Komputer mengalami serangan virus trojan", "Tinta printer kehabisan warna cyan"],
+                _meta: _sx("Kerapatan piksel (DPI/PPI) bitmap tidak memadai untuk skala cetak besar") // Kunci: A
+            },
+            {
+                _body: "[C4] Sebuah media edukasi digital mengklaim: 'Minum air rebusan tanaman X 100% menyembuhkan semua penyakit virus dalam 1 jam' tanpa menyertakan bukti rujukan jurnal medis. Berdasarkan prinsip kendali mutu dan verifikasi data, konten tersebut harus dinilai sebagai...",
+                _variants: ["Fakta sains terobosan baru", "Misinformasi/Disinformasi yang tidak lolos uji verifikasi fakta", "Opini akademis valid", "Hipotesis teruji klinis"],
+                _meta: _sx("Misinformasi/Disinformasi yang tidak lolos uji verifikasi fakta") // Kunci: B
+            },
+            {
+                _body: "[C4] Manakah di antara 4 produk konten digital berikut yang memiliki karakteristik paling tepat untuk audiens komuter yang ingin belajar sambil melakukan aktivitas lain (multitasking)?",
+                _variants: ["Infografik vertikal beresolusi tinggi", "Video tutorial animasi langkah demi langkah", "Siniar (Audio Podcast) tematik berdurasi 15-20 menit", "Modul bacaan e-Book 100 halaman format teks"],
+                _meta: _sx("Siniar (Audio Podcast) tematik berdurasi 15-20 menit") // Kunci: C
+            },
+            {
+                _body: "[C4] Mengapa penggunaan lebih dari empat jenis font (typeface) yang berlainan gaya dalam satu lembar poster digital dianggap sebagai kesalahan fatal desain?",
+                _variants: ["Menghabiskan ruang memori hard disk komputer", "Membuat warna latar belakang berubah otomatis", "Dilarang oleh undang-undang telekomunikasi", "Mengacaukan hirarki visual, menurunkan keterbacaan, dan menciptakan kesan visual yang berantakan"],
+                _meta: _sx("Mengacaukan hirarki visual, menurunkan keterbacaan, dan menciptakan kesan visual yang berantakan") // Kunci: D
+            },
+            {
+                _body: "[C4] Tim kendali mutu (QC) menolak draf video animasi edukasi sebelum dirilis ke publik karena ditemukan cuplikan logo merek komersial pakaian pada salah satu karakter tanpa izin. Keputusan penolakan QC didasarkan pada pertimbangan...",
+                _variants: ["Risiko sengketa Hak Kekayaan Intelektual (HAKI) dan merek dagang", "Format animasi kurang panjang durasinya", "Warna baju karakter kurang cerah", "Ketiadaan backsound suara tertawa"],
+                _meta: _sx("Risiko sengketa Hak Kekayaan Intelektual (HAKI) dan merek dagang") // Kunci: A
+            },
+            {
+                _body: "[C4] Dalam siklus metodologi kerja produksi konten digital (Pra-produksi, Produksi, Pasca-produksi), kegiatan penyusunan naskah rancangan dan storyboard dikelompokkan ke dalam tahap...",
+                _variants: ["Distribusi media", "Pra-produksi (Pre-production)", "Pasca-produksi (Post-production)", "Quality Assurance final"],
+                _meta: _sx("Pra-produksi (Pre-production)") // Kunci: B
+            },
+            {
+                _body: "[C4] Analisis kelemahan utama dari format infografik statis satu halaman jika dibandingkan dengan video animasi penjelas (explainer video) ketika menyampaikan topik 'Cara Kerja Mesin Turbin Uap' adalah...",
+                _variants: ["Infografik membutuhkan biaya hosting yang jauh lebih mahal", "Infografik tidak bisa dicetak di kertas", "Infografik statis tidak dapat memperlihatkan simulasi gerakan dinamis aliran fluida secara berurutan secara temporal", "Infografik dilarang menggunakan warna kontras"],
+                _meta: _sx("Infografik statis tidak dapat memperlihatkan simulasi gerakan dinamis aliran fluida secara berurutan secara temporal") // Kunci: C
+            },
+            {
+                _body: "[C4] Di lab komputer sekolah, seorang siswa mencabut flashdisk teman saat proses rendering video sedang berjalan 90%, mengakibatkan file proyek menjadi 'Corrupted'. Rekomendasi prosedur lab yang paling tepat untuk mencegah insiden ini adalah...",
+                _variants: ["Mengganti flashdisk dengan harddisk eksternal yang lebih berat", "Melarang siswa membawa flashdisk ke sekolah", "Merender proyek langsung di layar browser tanpa aplikasi", "Bekerja di direktori penyimpanan lokal komputer, melakukan backup cloud, dan hanya mencabut media setelah proses unmount aman"],
+                _meta: _sx("Bekerja di direktori penyimpanan lokal komputer, melakukan backup cloud, dan hanya mencabut media setelah proses unmount aman") // Kunci: D
+            },
+            {
+                _body: "[C4] Apa indikator dampak (impact) yang paling valid untuk mengukur keberhasilan konten digital kampanye sosial sekolah 'Kurangi Sampah Plastik'?",
+                _variants: ["Penurunan volume sampah plastik nyata di kantin sekolah dan tingginya keterlibatan aksi nyata warga sekolah", "Banyaknya font yang digunakan dalam poster kampanye", "Panjangnya durasi video yang diunggah", "Ukuran file video mencapai 10 Gigabyte"],
+                _meta: _sx("Penurunan volume sampah plastik nyata di kantin sekolah dan tingginya keterlibatan aksi nyata warga sekolah") // Kunci: A
+            },
+            {
+                _body: "[C4] Seorang desainer membuat karya gambar digital dengan memanfaatkan foto wajah orang lain yang diambil secara diam-diam di ruang publik lalu menambahkan narasi yang merendahkan martabat orang tersebut. Pelanggaran yang terjadi mencakup...",
+                _variants: ["Pelanggaran hak cipta font", "Pelanggaran privasi, pencemaran nama baik, dan etika siber menurut UU ITE", "Kesalahan tata letak komposisi golden ratio", "Pelanggaran hak merek logo"],
+                _meta: _sx("Pelanggaran privasi, pencemaran nama baik, dan etika siber menurut UU ITE") // Kunci: B
+            },
+            {
+                _body: "[C4] Dua aplikasi berikut yang paling tepat dipasangkan dalam alur kerja produksi infografik data statistik sekolah berbasis vektor adalah...",
+                _variants: ["Aplikasi pemutar musik dan aplikasi pengolah kata dasar", "Aplikasi benchmark 3D dan kalkulator sistem", "Aplikasi spreadsheet untuk pengolah data angka dan aplikasi editor grafis vektor untuk visualisasi diagram", "Aplikasi web browser dan peramban berkas teks sederhana"],
+                _meta: _sx("Aplikasi spreadsheet untuk pengolah data angka dan aplikasi editor grafis vektor untuk visualisasi diagram") // Kunci: C
+            },
+            {
+                _body: "[C4] Perhatikan fenomena berikut: Sebuah postingan media sosial mendapat ribuan klik karena judulnya yang sensasional dan memicu amarah publik, tetapi isi artikel ternyata sama sekali tidak sesuai dengan judulnya (clickbait). Praktik ini melanggar prinsip...",
+                _variants: ["Kapasitas bandwidth server", "Format kompresi berkas media", "Prinsip warna komplementer", "Kejujuran intelektual, integritas konten, dan akurasi informasi"],
+                _meta: _sx("Kejujuran intelektual, integritas konten, dan akurasi informasi") // Kunci: D
+            },
+            {
+                _body: "[C4] Dalam proyek kolaborasi pembuatan e-Magazine sekolah, tim menggunakan sistem kendali versi cloud (Cloud Version Control). Manfaat utama teknologi ini terhadap manajemen tim adalah...",
+                _variants: ["Mencegah file tertimpa secara tidak sengaja, melacak kontribusi tiap anggota, dan memungkinkan kolaborasi simultan", "Membatasi anggota tim agar tidak bisa saling membaca draf", "Menghapus riwayat perubahan secara otomatis setiap 5 menit", "Membuat hasil desain selalu otomatis menjadi hitam putih"],
+                _meta: _sx("Mencegah file tertimpa secara tidak sengaja, melacak kontribusi tiap anggota, dan memungkinkan kolaborasi simultan") // Kunci: A
+            },
+            {
+                _body: "[C4] Saat merancang sampul depan e-Book tentang kecerdasan buatan (AI), desainer ingin menciptakan kesan futuristik dan teratur. Kombinasi elemen visual yang paling harmonis dan konsisten adalah...",
+                _variants: ["Font tulisan tangan kuno dengan gambar pemandangan pedesaan", "Palet warna biru-neon/monokrom modern, tipografi geometris tegas, dan ilustrasi jaringan data yang minimalis", "Warna latar belakang gradasi pelangi acak dengan 10 jenis ikon kartun berbeda", "Ilustrasi komik bergaya anak balita dengan tema riset perguruan tinggi"],
+                _meta: _sx("Palet warna biru-neon/monokrom modern, tipografi geometris tegas, dan ilustrasi jaringan data yang minimalis") // Kunci: B
+            },
+            {
+                _body: "[C4] Pada tahap akhir kendali mutu (QC) audio podcast, ditemukan bahwa level puncak audio mencapai +3 dB sehingga menimbulkan distorsi suara serak pada speaker ponsel penonton. Solusi teknis kendali mutu yang wajib diterapkan audio editor adalah...",
+                _variants: ["Menaikkan volume master sebesar 10 dB", "Mempercepat tempo rekaman menjadi dua kali lipat", "Menerapkan limiter dan normalisasi audio agar level suara puncak berada pada rentang standar aman -1 dB hingga -2 dB True Peak", "Mengubah kanal suara menjadi frekuensi ultrasonik"],
+                _meta: _sx("Menerapkan limiter dan normalisasi audio agar level suara puncak berada pada rentang standar aman -1 dB hingga -2 dB True Peak") // Kunci: C
+            },
+            {
+                _body: "[C4] Evaluasi dampak menyeluruh dari proyek konten digital siswa dinilai paling komprehensif apabila instrumen penilaian tidak hanya menguji keindahan visual, melainkan juga menimbang...",
+                _variants: ["Harga perangkat laptop yang digunakan siswa saat mengedit", "Kecepatan siswa dalam mengetik naskah tanpa melihat keyboard", "Banyaknya efek transisi visual animasi 3D di setiap detik", "Ketepatan pesan materi, nilai etika/legalitas sumber, pemenuhan kebutuhan audiens sasaran, dan metodologi kerja kolaboratif"],
+                _meta: _sx("Ketepatan pesan materi, nilai etika/legalitas sumber, pemenuhan kebutuhan audiens sasaran, dan metodologi kerja kolaboratif") // Kunci: D
+            }
+        ];
+
+        let studentInfo = { name: '', class: '', teacherWA: '', level: 'SMP', subject: 'Informatika' };
+        let _activeIdx = 0;
+        let _userPicks = new Array(_c0nfigPack.length).fill(null);
+        let timerSeconds = 75 * 60;
+        let timerInterval = null;
+        let startTime = null;
+        let _readySet = null;
+        
+        let quizStarted = false;
+        let quizFinished = false;
+        let violationCount = 0;
+        const MAX_VIOLATIONS = 3;
+
+        function updateQuestionCount() {
+            const count = _c0nfigPack.length;
+            document.getElementById('total-question-count').innerText = count;
+            document.getElementById('question-map-title').innerText = `Peta Navigasi Soal (${count} Butir)`;
+        }
+
+        updateQuestionCount();
+
+        // Pengacakan Opsi Fisher-Yates agar opsi A/B/C/D merata dan dinamis
+        function _shuffleOptions(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function _prepRuntime() {
+            _readySet = _c0nfigPack.map(entry => {
+                const correctText = _dx(entry._meta);
+                return {
+                    _body: entry._body,
+                    _vars: _shuffleOptions(entry._variants),
+                    _ans: correctText
+                };
+            });
+        }
+
+        function requestFullScreen() {
+            if (_isMobileUA()) return;
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(() => {});
+            }
+        }
+
+        document.addEventListener('contextmenu', e => { if(quizStarted && !quizFinished) e.preventDefault(); });
+        document.addEventListener('copy', e => { if(quizStarted && !quizFinished) e.preventDefault(); });
+        document.addEventListener('cut', e => { if(quizStarted && !quizFinished) e.preventDefault(); });
+        document.addEventListener('paste', e => { if(quizStarted && !quizFinished) e.preventDefault(); });
+
+        // Deteksi perpindahan tab / meninggalkan layar ujian
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && quizStarted && !quizFinished) {
+                registerViolation("Berpindah tab atau meminimalkan jendela browser");
+            }
+        });
+
+        function registerViolation(reason) {
+            if (!quizStarted || quizFinished) return;
+            violationCount++;
+            document.getElementById('violation-count-display').innerText = violationCount;
+
+            if (violationCount >= MAX_VIOLATIONS) {
+                showSecurityModal(
+                    "Batas Pelanggaran Terlampaui!",
+                    `Anda melakukan pelanggaran sebanyak ${MAX_VIOLATIONS}x: ${reason}. Ujian otomatis dikumpulkan oleh sistem.`,
+                    true
+                );
+            } else {
+                showSecurityModal(
+                    `Peringatan Pelanggaran (${violationCount}/${MAX_VIOLATIONS})`,
+                    `Terdeteksi: ${reason}. Harap tetap fokus pada lembar ujian.`,
+                    false
+                );
+            }
+        }
+
+        function showSecurityModal(title, message, isFatal = false) {
+            const modal = document.getElementById('security-modal');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            const primaryBtn = document.getElementById('modal-primary-btn');
+
+            if (isFatal) {
+                primaryBtn.innerText = "Kumpulkan Ujian Sekarang";
+                primaryBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    submitQuiz();
+                };
+            } else {
+                primaryBtn.innerText = "Lanjutkan Ujian";
+                primaryBtn.onclick = () => { modal.classList.add('hidden'); };
+            }
+            modal.classList.remove('hidden');
+        }
+
+        async function startQuiz(event) {
+            event.preventDefault();
+
+            // Cek ulang penguncian 1x pengerjaan sebelum mulai
+            const existing = getAttemptRecord();
+            if (existing) {
+                showAlreadyTakenScreen(existing);
+                return;
+            }
+
+            const nameInput = document.getElementById('student-name').value.trim();
+            const classInput = document.getElementById('student-class').value.trim();
+            const waInput = document.getElementById('teacher-wa').value.trim();
+            const agreeLicense = document.getElementById('agree-license').checked;
+
+            if (!nameInput || !classInput || !waInput || !agreeLicense) return;
+
+            studentInfo.name = nameInput;
+            studentInfo.class = classInput;
+            studentInfo.teacherWA = waInput.startsWith('0') ? waInput.slice(1) : waInput;
+
+            const startRecord = {
+                name: studentInfo.name,
+                class: studentInfo.class,
+                startedAt: new Date().toISOString(),
+                completed: false,
+                score: 0,
+                correct: 0,
+                total: _c0nfigPack.length
+            };
+
+            const claimAttempt = () => {
+                const existingNow = getAttemptRecord();
+                if (existingNow) {
+                    showAlreadyTakenScreen(existingNow);
+                    return false;
+                }
+
+                // Segera kunci percobaan begitu ujian dimulai (mencegah refresh/ulang)
+                if (!saveAttemptRecord(startRecord)) {
+                    alert('Penguncian ujian gagal disimpan. Periksa pengaturan browser (local storage) lalu coba lagi.');
+                    return false;
+                }
+
+                if (attemptChannel) {
+                    attemptChannel.postMessage({ type: 'attempt-updated', record: startRecord });
+                }
+
+                document.getElementById('display-name').innerText = studentInfo.name;
+                document.getElementById('display-subject').innerText = `${studentInfo.subject} (${studentInfo.level}) - Kelas ${studentInfo.class}`;
+
+                document.getElementById('start-screen').classList.add('hidden');
+                document.getElementById('quiz-screen').classList.remove('hidden');
+                document.getElementById('timer-box').classList.remove('hidden');
+                document.getElementById('violation-badge').classList.remove('hidden');
+
+                _prepRuntime();
+                startTime = new Date();
+                quizStarted = true;
+                requestFullScreen();
+
+                initGrid();
+                displayQuestion();
+                startTimer();
+                return true;
+            };
+
+            if (navigator.locks && navigator.locks.request) {
+                await navigator.locks.request('_cbt_inf9_attempt_claim_', claimAttempt);
+            } else {
+                claimAttempt();
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                let mins = Math.floor(timerSeconds / 60);
+                let secs = timerSeconds % 60;
+                document.getElementById('timer-display').innerText = 
+                    `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    showSecurityModal("Waktu Habis!", "Waktu pengerjaan telah habis! Jawaban dikumpulkan otomatis.", true);
+                }
+            }, 1000);
+        }
+
+        function toggleNavSoal() {
+            const navBox = document.getElementById('nav-soal-mobile');
+            const icon = document.getElementById('nav-toggle-icon');
+            if (!navBox) return;
+            if (navBox.classList.contains('nav-soal-hidden')) {
+                navBox.classList.remove('nav-soal-hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                navBox.classList.add('nav-soal-hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function _buildGridInto(containerId, prefixId) {
+            const gridContainer = document.getElementById(containerId);
+            if (!gridContainer) return;
+            gridContainer.innerHTML = '';
+            const wrap = document.createElement('div');
+            wrap.className = 'quiz-grid-list';
+            const count = Array.isArray(_readySet) ? _readySet.length : 0;
+            for (let i = 0; i < count; i++) {
+                const btn = document.createElement('button');
+                btn.id = `${prefixId}-${i}`;
+                btn.type = 'button';
+                btn.innerText = i + 1;
+                btn.onclick = () => { jumpToQuestion(i); if (prefixId === 'grid-m-btn') toggleNavSoal(); };
+                btn.className = 'quiz-nav-button w-full text-xs font-semibold rounded border border-slate-300 bg-white hover:bg-slate-100 transition flex items-center justify-center';
+                wrap.appendChild(btn);
+            }
+            gridContainer.appendChild(wrap);
+        }
+
+        function initGrid() {
+            _buildGridInto('quiz-grid', 'grid-d-btn');
+            _buildGridInto('quiz-grid-mobile-container', 'grid-m-btn');
+            updateGridStatus();
+        }
+
+        function _updateGridByPrefix(prefixId) {
+            const count = Array.isArray(_readySet) ? _readySet.length : 0;
+            for (let i = 0; i < count; i++) {
+                const btn = document.getElementById(`${prefixId}-${i}`);
+                if (!btn) continue;
+                btn.className = 'quiz-nav-button w-full text-xs font-semibold rounded border transition flex items-center justify-center';
+
+                if (_userPicks[i] !== null) {
+                    btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                } else {
+                    btn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+                }
+
+                if (i === _activeIdx) {
+                    btn.classList.add('ring-2', 'ring-emerald-600', 'border-emerald-600', 'font-bold');
+                }
+            }
+        }
+
+        function updateGridStatus() {
+            if (!Array.isArray(_readySet)) return;
+            _updateGridByPrefix('grid-d-btn');
+            _updateGridByPrefix('grid-m-btn');
+            const answeredCount = _userPicks.filter(a => a !== null).length;
+            document.getElementById('answered-count').innerText = answeredCount;
+        }
+
+        function displayQuestion() {
+            const q = _readySet[_activeIdx];
+            document.getElementById('question-number-badge').innerText = `Soal No. ${_activeIdx + 1} dari ${_readySet.length}`;
+            document.getElementById('question-text').innerHTML = q._body;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q._vars.forEach((optText, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.onclick = () => selectOption(idx, optText);
+                const isSelected = (_userPicks[_activeIdx] !== null) && _cmp(_userPicks[_activeIdx], optText);
+                optionDiv.className = `option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition flex items-start space-x-3 ${isSelected ? 'selected' : ''}`;
+
+                optionDiv.innerHTML = `
+                    <span class="w-7 h-7 rounded-full border-2 border-slate-300 flex-shrink-0 flex items-center justify-center font-bold text-xs bg-white text-slate-700">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <p class="text-slate-700 text-sm md:text-base pt-0.5">${optText}</p>
+                `;
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('prev-btn').disabled = (_activeIdx === 0);
+            const nextBtn = document.getElementById('next-btn');
+            if (_activeIdx === _readySet.length - 1) {
+                nextBtn.innerText = "Selesai";
+                nextBtn.onclick = confirmSubmit;
+            } else {
+                nextBtn.innerText = "Berikutnya \u2192";
+                nextBtn.onclick = nextQuestion;
+            }
+            updateGridStatus();
+        }
+
+        function selectOption(index, optText) {
+            _userPicks[_activeIdx] = optText;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (_activeIdx < _readySet.length - 1) {
+                _activeIdx++;
+                displayQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (_activeIdx > 0) {
+                _activeIdx--;
+                displayQuestion();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            if (!Array.isArray(_readySet) || index < 0 || index >= _readySet.length) return;
+            _activeIdx = index;
+            displayQuestion();
+        }
+
+        function confirmSubmit() {
+            const answeredCount = _userPicks.filter(a => a !== null).length;
+            const unanswered = _readySet.length - answeredCount;
+            let msg = `Apakah Anda yakin ingin mengumpulkan lembar ujian?`;
+            if (unanswered > 0) {
+                msg += ` Masih ada ${unanswered} butir soal yang belum dijawab!`;
+            }
+            document.getElementById('confirm-modal-msg').innerText = msg;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function submitQuiz() {
+            if (quizFinished) return;
+            clearInterval(timerInterval);
+            closeConfirmModal();
+
+            let correctCount = 0;
+            let wrongList = [];
+            let correctList = [];
+            _userPicks.forEach((ans, i) => {
+                if (ans !== null && _cmp(ans, _readySet[i]._ans)) {
+                    correctCount++;
+                    correctList.push(i + 1);
+                } else {
+                    wrongList.push(i + 1);
+                }
+            });
+
+            const totalScore = Math.round((correctCount / _readySet.length) * 100);
+            const answeredCount = _userPicks.filter(a => a !== null).length;
+            const timeUsedSeconds = (75 * 60) - timerSeconds;
+            const usedMins = Math.floor(timeUsedSeconds / 60);
+            const usedSecs = timeUsedSeconds % 60;
+
+            let gradePredikat = totalScore >= 85 ? "SANGAT BAIK (A)" : totalScore >= 70 ? "BAIK (B)" : totalScore >= 55 ? "CUKUP (C)" : "PERLU PEMBINAAN (D)";
+
+            const waMsg =
+`📋 *LEMBAR HASIL UJIAN INFORMATIKA KELAS 9*
+━━━━━━━━━━━━━━━━━━━━━━━━
+📚 *Tema:* Proyek Konten Digital & Seni Desain Produk Digital
+👤 *Nama Peserta:* ${studentInfo.name}
+🏫 *Kelas:* ${studentInfo.class}
+⏱️ *Durasi:* ${usedMins} menit ${usedSecs} detik
+📊 *Skor Akhir:* ${totalScore} / 100 (${gradePredikat})
+✅ *Benar:* ${correctCount} / ${_readySet.length} Butir
+❌ *Salah:* ${_readySet.length - correctCount} Butir
+━━━━━━━━━━━━━━━━━━━━━━━━
+Lembar hasil dikirim otomatis melalui sistem CBT.`;
+
+            const waEncoded = encodeURIComponent(waMsg);
+            const waFullNumber = "62" + studentInfo.teacherWA.replace(/\D/g, '');
+            const waUrl = `https://wa.me/${waFullNumber}?text=${waEncoded}`;
+
+            // Simpan hasil final permanen agar tidak dapat diulang
+            const finalRecord = {
+                name: studentInfo.name,
+                class: studentInfo.class,
+                finishedAt: new Date().toISOString(),
+                completed: true,
+                score: totalScore,
+                correct: correctCount,
+                total: _readySet.length,
+                waUrl: waUrl
+            };
+            saveAttemptRecord(finalRecord);
+            if (attemptChannel) {
+                attemptChannel.postMessage({ type: 'attempt-updated', record: finalRecord });
+            }
+            quizFinished = true;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('timer-box').classList.add('hidden');
+            document.getElementById('violation-badge').classList.add('hidden');
+
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('res-name').innerText = studentInfo.name;
+            document.getElementById('res-class').innerText = studentInfo.class;
+            document.getElementById('res-subject').innerText = `${studentInfo.subject} (${studentInfo.level})`;
+            document.getElementById('res-time').innerText = `${usedMins} menit ${usedSecs} detik`;
+            document.getElementById('res-answered').innerText = `${answeredCount} dari ${_readySet.length} soal (${correctCount} Benar)`;
+            document.getElementById('score-display').innerText = totalScore;
+            document.getElementById('grade-message').innerText = `Predikat: ${gradePredikat}. Penguasaan materi proyek dan seni produk digital.`;
+            document.getElementById('wa-send-btn').href = waUrl;
+        }
+    </script>
+</body>
+</html>
